@@ -74,8 +74,8 @@ class Volunteer:
 
     # URL编码
     def percentEncode(self,value,flag='str'):
-        '''flag=0 -> encodeStr (default)
-            flag=1 -> encodeDict'''
+        '''flag=str -> encodeStr (default)
+            flag=dic -> encodeDict'''
         if flag == 'str':
             return urllib.parse.quote(string=value,encoding='utf-8').replace("+", "%20").replace("*", "%2A").replace("%7E", "~")
         elif flag == 'dic':

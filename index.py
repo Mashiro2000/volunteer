@@ -2,14 +2,8 @@
 # -*- coding: utf-8 -*-
 # @Time    : 2021/10/20
 # @Author  : MashiroF
-# @Author  : subcarry
 # @File    : index.py
 # @Software: PyCharm
-
-'''
-cron:  5 0-23/6 * * * index.py
-new Env('志愿汇益动星空');
-'''
 
 # 系统自带库
 import os
@@ -59,7 +53,7 @@ class Volunteer:
     def __init__(self,dic):
         self.AccessKeyId = '16437d7b750546789da84ee4d50e92f2'       # 不可修改
         self.app = "android"                                        # 无IOS，不清楚
-        self.city = ''                                              # 城市id，可修改
+        self.city = '1476084112357362988eba11e682992c56dcba85b9'    # 城市id，可修改
         self.dic = dic                                              # 账号信息，不可改
         self.key = '928c5f59f3ce40b1a3850b828685a816'               # 密钥，不可改
         self.version = '4.8.5'                                      # 版本号
@@ -74,8 +68,8 @@ class Volunteer:
 
     # URL编码
     def percentEncode(self,value,flag='str'):
-        '''flag=str -> encodeStr (default)
-            flag=dic -> encodeDict'''
+        '''flag=0 -> encodeStr (default)
+            flag=1 -> encodeDict'''
         if flag == 'str':
             return urllib.parse.quote(string=value,encoding='utf-8').replace("+", "%20").replace("*", "%2A").replace("%7E", "~")
         elif flag == 'dic':
@@ -408,18 +402,30 @@ class Volunteer:
             response = requests.post(url=answerUrl, headers=headers, data=answerData,params=params).json()
             notify(f"账号:{self.dic['nickname']}\t回答结果:{response['message']}")
 
+    def start(self):
+        if self.getToken() == True:                # 获取登录Token
+            if self.getStarCookie() == True:       # 获取星空活动CK
+                self.getVideo()                    # 观看视频
+                self.answerQuestion()              # 回答问题
+                if self.getEnergy() == True:       # 获取能量值
+                    self.pushEnergy()              # 为飞船充能
 # 适配云函数
 def main_handler(event, context):
     for each in accounts:
         if all(each.values()):
             volunteer = Volunteer(each)
-            if volunteer.getToken() == True:                # 获取登录Token
-                if volunteer.getStarCookie() == True:       # 获取星空活动CK
-                    volunteer.getVideo()                    # 观看视频
-                    volunteer.answerQuestion()              # 回答问题
-                    if volunteer.getEnergy() == True:       # 获取能量值
-                        volunteer.pushEnergy()              # 为飞船充能
-            time.sleep(random.randint(3,5))
+            for count in range(3):
+                try:
+                    time.sleep(random.randint(2,5))    # 随机延时
+                    volunteer.start()
+                    break
+                except requests.exceptions.ConnectionError:
+                    notify(f"{volunteer.dic['nickname']}\t请求失败，随机延迟后再次访问")
+                    time.sleep(random.randint(2,5))
+                    continue
+            else:
+                notify(f"账号: {volunteer.dic['nickname']}\n状态: 取消登录\n原因: 多次登录失败")
+                break
             notify('*' * 28 + '\n')
     send('志愿汇益动星空',allMess)
 

@@ -33,6 +33,11 @@
 │  sendNotify.py        # 推送文件
 │  README.md            # 说明文档
 ```
-
+```text
+第一次拉库命令
+ql repo https://github.com/Mashiro2000/volunteer.git "" "account|sendNotify" "account|sendNotify"
+第二次拉库命令(确保account.py不被覆盖)
+ql repo https://github.com/Mashiro2000/volunteer.git "" "account|sendNotify" "sendNotify"
+```
 ## 特别说明
 > 感谢舍友[@subcarry](https://github.com/subcarry)合作开发本项目

@@ -5,6 +5,11 @@
 # @File    : index.py
 # @Software: PyCharm
 
+'''
+cron:  30 6,12 * * * index.py
+new Env('志愿汇益动星空');
+'''
+
 # 系统自带库
 import os
 import sys

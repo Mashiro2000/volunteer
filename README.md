@@ -42,5 +42,3 @@ ql repo https://github.com/Mashiro2000/volunteer.git "" "account|sendNotify" "ac
 第二次拉库命令(确保account.py不被覆盖)
 ql repo https://github.com/Mashiro2000/volunteer.git "" "account|sendNotify" "sendNotify"
 ```
-## 特别说明
-> 感谢舍友[@subcarry](https://github.com/subcarry)合作开发本项目
